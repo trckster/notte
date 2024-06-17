@@ -21,7 +21,7 @@ class TokenFactory extends Factory
             "target_chat_id" => fake()->randomNumber(),
             "secret" => fake()->text(),
             "created_at" => fake()->date("Y-m-d"),
-            "revoked_at"=> fake()->date("Y-m-d"),
+            "revoked_at"=> null,
         ];
     }
 }

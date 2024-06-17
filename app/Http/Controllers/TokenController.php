@@ -11,20 +11,16 @@ class TokenController extends Controller
 {
     public function logData(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'token' => 'required|exists:tokens,secret',
-                'data' => 'required|filled',
-            ]);
-        } catch (ValidationException $e) {
-            return response('Data is not valid!', 401);
-        }
+        $validated = $request->validate([
+            'token' => 'required|exists:tokens,secret',
+            'data' => 'required|filled',
+        ]);
 
 
-        $token = Token::query()->get()->where('secret',$validated['token'])->first();
+        $token = Token::query()->where('secret',$validated['token'])->first();
         $data = $validated['data'];
 
-        if ($token->revoked_at === null) {
+        if ($token->revoked_at !== null) {
             return response('Data is not valid!', 401);
         }
 
