@@ -5,13 +5,11 @@ namespace Tests\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\Token;
-use TiMacDonald\Log\LogFake;
-use Illuminate\Support\Facades\Log;
 
 class LogTest extends TestCase
 {
     #[Test]
-    public function WrongToken()
+    public function cantLogUserInvalidToken()
     {
         $secret = fake()->text(10);
         $data = 'TEST_DATA';
@@ -21,29 +19,15 @@ class LogTest extends TestCase
     }
 
     #[Test]
-    public function revokedToken()
+    public function cantLogUsingRevokedToken()
     {
-        $token = Token::factory()->create();
-        $revokeTime = fake()->date("Y-m-d");
-
         $data = 'TEST_DATA';
 
-        $token->update([
-            'revoked_at' => $revokeTime,
+        $token = Token::factory()->create([
+            'revoked_at' => fake()->date(),
         ]);
 
         $this->postJson(route('log'), ['token' => $token->secret, 'data' => $data])->assertStatus(401);
 
     }
-
-    /*#[Test]
-    public function loggingWorks()
-    {
-        $token = Token::factory()->create();
-        $data = 'TEST_DATA';
-
-        $fakeLog = 
-
-        $this->postJson(route('log'), ['token' => $token->secret,'data'=> $data])->assertOk;
-    }*/
 }

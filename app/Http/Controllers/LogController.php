@@ -6,8 +6,9 @@ use App\Models\Token;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
-class TokenController extends Controller
+class LogController extends Controller
 {
     public function logData(Request $request)
     {
@@ -21,7 +22,7 @@ class TokenController extends Controller
         $data = $validated['data'];
 
         if ($token->revoked_at !== null) {
-            return response('Data is not valid!', 401);
+            return Response('Token was revoked!', 401);
         }
 
         Log::info("{$token->user_id} -> {$token->target_chat_id}: {$data}");

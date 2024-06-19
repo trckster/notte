@@ -15,13 +15,10 @@ return new class extends Migration
             $table->bigInteger('target_chat_id');
             $table->string('secret');
             $table->timestamp('created_at');
-            $table->timestamp('revoked_at');
+            $table->timestamp('revoked_at')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists($this->tableName);
