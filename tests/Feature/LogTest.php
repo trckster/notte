@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Facades\Log;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\Token;
@@ -15,7 +16,6 @@ class LogTest extends TestCase
         $data = 'TEST_DATA';
 
         $this->postJson(route('log'), ['token' => $secret, 'data' => $data])->assertStatus(422);
-        
     }
 
     #[Test]
@@ -28,6 +28,18 @@ class LogTest extends TestCase
         ]);
 
         $this->postJson(route('log'), ['token' => $token->secret, 'data' => $data])->assertStatus(401);
+    }
 
+    #[Test]
+    public function canLogData()
+    {
+        $token = Token::factory()->create();
+
+        Log::shouldReceive('info')
+            ->withArgs(["{$token->user_id} -> {$token->target_chat_id}: Any data"])
+            ->once();
+
+        $this->postJson(route('log'), ['token' => $token->secret, 'data' => 'Any data'])
+            ->assertStatus(200);
     }
 }
