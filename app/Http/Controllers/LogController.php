@@ -10,12 +10,8 @@ class LogController extends Controller
 {
     public function logData(Request $request)
     {
-        $validated = $request->validate([
-            'token' => 'required|exists:tokens,secret',
-            'data' => 'required|filled',
-        ]);
 
-        $token = Token::query()->where('secret', $validated['token'])->first();
+        $token = Token::query()->where('secret', $request->da['token'])->first();
         $data = $validated['data'];
 
         if ($token->revoked_at) {
