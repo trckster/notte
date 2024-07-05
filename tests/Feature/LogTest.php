@@ -15,7 +15,9 @@ class LogTest extends TestCase
         $secret = fake()->text(10);
         $data = 'TEST_DATA';
 
-        $this->postJson(route('log'), ['token' => $secret, 'data' => $data])->assertStatus(422);
+        $this->postJson(route('log'), ['data' => $data], [
+            'Authorization' => $secret
+        ])->assertStatus(422);
     }
 
     #[Test]
@@ -27,7 +29,9 @@ class LogTest extends TestCase
             'revoked_at' => fake()->date(),
         ]);
 
-        $this->postJson(route('log'), ['token' => $token->secret, 'data' => $data])->assertStatus(401);
+        $this->postJson(route('log'), ['data' => $data], [
+            'Authorization' => $token->secret
+        ])->assertStatus(401);
     }
 
     #[Test]
@@ -39,7 +43,8 @@ class LogTest extends TestCase
             ->withArgs(["{$token->user_id} -> {$token->target_chat_id}: Any data"])
             ->once();
 
-        $this->postJson(route('log'), ['token' => $token->secret, 'data' => 'Any data'])
-            ->assertStatus(200);
+        $this->postJson(route('log'), ['data' => 'Any data'], [
+            'Authorization' => $token->secret
+        ])->assertStatus(200);
     }
 }

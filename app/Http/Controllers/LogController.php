@@ -10,14 +10,6 @@ class LogController extends Controller
 {
     public function logData(Request $request)
     {
-
-        $token = Token::query()->where('secret', $request->da['token'])->first();
-        $data = $validated['data'];
-
-        if ($token->revoked_at) {
-            return response('Token was revoked!', 401);
-        }
-
-        Log::info("{$token->user_id} -> {$token->target_chat_id}: {$data}");
+        Log::info("{$request->get('user_id')} -> {$request->get('target_chat_id')}: {$request->get('data')}");
     }
 }
