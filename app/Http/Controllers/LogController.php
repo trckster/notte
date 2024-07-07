@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Token;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -11,17 +11,13 @@ class LogController extends Controller
     public function logData(Request $request)
     {
         $validated = $request->validate([
-            'token' => 'required|exists:tokens,secret',
             'data' => 'required|filled',
         ]);
 
-        $token = Token::query()->where('secret', $validated['token'])->first();
+        $userId = Context::get('user_id');
+        $targetChatId = Context::get('target_chat_id');
         $data = $validated['data'];
 
-        if ($token->revoked_at) {
-            return response('Token was revoked!', 401);
-        }
-
-        Log::info("{$token->user_id} -> {$token->target_chat_id}: {$data}");
+        Log::info("$userId -> $targetChatId: $data");
     }
 }
