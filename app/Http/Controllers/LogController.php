@@ -18,6 +18,6 @@ class LogController extends Controller
         $targetChatId = Context::get('target_chat_id');
         $data = $validated['data'];
 
-        Log::info("{$userId} -> {$targetChatId}: {$data}");
+        Log::info("$userId -> $targetChatId: $data");
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\Token;
@@ -12,11 +13,11 @@ class LogTest extends TestCase
     #[Test]
     public function cantLogUserInvalidToken()
     {
-        $secret = fake()->text(10);
+        $secret = Str::random();
         $data = 'TEST_DATA';
 
         $this->postJson(route('log'), ['data' => $data], [
-            'Authorization' => "Bearer {$secret}"
+            'Authorization' => "Bearer $secret"
         ])->assertStatus(422);
     }
 
