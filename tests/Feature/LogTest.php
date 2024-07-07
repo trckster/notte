@@ -16,7 +16,7 @@ class LogTest extends TestCase
         $data = 'TEST_DATA';
 
         $this->postJson(route('log'), ['data' => $data], [
-            'Authorization' => $secret
+            'Authorization' => "Bearer {$secret}"
         ])->assertStatus(422);
     }
 
@@ -30,7 +30,7 @@ class LogTest extends TestCase
         ]);
 
         $this->postJson(route('log'), ['data' => $data], [
-            'Authorization' => $token->secret
+            'Authorization' => "Bearer {$token->secret}"
         ])->assertStatus(401);
     }
 
@@ -44,7 +44,7 @@ class LogTest extends TestCase
             ->once();
 
         $this->postJson(route('log'), ['data' => 'Any data'], [
-            'Authorization' => $token->secret
+            'Authorization' => "Bearer {$token->secret}"
         ])->assertStatus(200);
     }
 }

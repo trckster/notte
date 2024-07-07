@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Token;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -10,6 +10,14 @@ class LogController extends Controller
 {
     public function logData(Request $request)
     {
-        Log::info("{$request->get('user_id')} -> {$request->get('target_chat_id')}: {$request->get('data')}");
+        $validated = $request->validate([
+            'data' => 'required|filled',
+        ]);
+
+        $userId = Context::get('user_id');
+        $targetChatId = Context::get('target_chat_id');
+        $data = $validated['data'];
+
+        Log::info("{$userId} -> {$targetChatId}: {$data}");
     }
 }
