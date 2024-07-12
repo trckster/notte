@@ -1,8 +1,8 @@
 <?php
 
-use Telegram\Bot\Laravel\Facades\Telegram;
+/*use Telegram\Bot\Laravel\Facades\Telegram;
 class TelegramBotHandler {
     protected $telegram
     
 
-}
+}*/

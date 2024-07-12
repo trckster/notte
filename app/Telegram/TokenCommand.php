@@ -3,7 +3,8 @@
 namespace App\Telegram\Commands;
 
 use Telegram\Bot\Commands\Command;
-use Telegram\Bot\Laravel\Facades\Telegram;
+use App\Models\Token;
+use Str;
 
 class TokenCommand extends Command
 {
@@ -12,9 +13,21 @@ class TokenCommand extends Command
 
     public function handle()
     {
-        $message = $this->getUpdate()->getChat();
+        $chat = $this->getUpdate()->getChat();
+
+        $targetChatId = $chat->get('id');
+        $userId = $this->getUpdate()->getMessage()->get('user')->id;
+        $secret = $userId . ':' . Str::random(24);
         
-        $targetChatId = $message->
+
+        Token::query()
+                ->create(
+                    [
+                        'target_chat_id' => $targetChatId,
+                        'user_id' => $userId,
+                        'secret' => $secret,
+                    ]
+                    );
 
         $this->replyWithMessage([
             'text' => 'Hey, there! Welcome to our bot!',
