@@ -14,8 +14,7 @@ class HasValidTelegramToken
          
         if ($tokenSecret !== config('telegram.webhook_token'))
         {
-            echo "$tokenSecret\n";
-            return Response('Invalid telegram token!', 401);
+            return response('Invalid telegram token!', 401);
         }
 
         return $next($request);

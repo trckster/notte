@@ -28,7 +28,8 @@ class TokenCommand extends Command
         );
 
         $this->replyWithMessage([
-            'text' => "$secret",
+            'text' => "Your token:\n\n`$secret`\n\nAll the previous tokens were revoked",
+            'parse_mode' => 'MarkdownV2',
         ]);
     }
 }
