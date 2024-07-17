@@ -1,10 +1,11 @@
 <?php
 
-use App\Telegram\Commands\StartCommand;
-use App\Telegram\Commands\TokenCommand;
+use App\Telegram\StartCommand;
+use App\Telegram\TokenCommand;
 use Telegram\Bot\Commands\HelpCommand;
 
 return [
+    'webhook_token' => env('TELEGRAM_WEBHOOK_TOKEN', 'TELEGRAM-WEBHOOK-TOKEN'),
     /*
     |--------------------------------------------------------------------------
     | Your Telegram Bots
@@ -42,7 +43,8 @@ return [
              */
             'allowed_updates' => null,
             'commands' => [
-                StartCommand::class
+                StartCommand::class,
+                TokenCommand::class,
             ],
         ],
 
@@ -132,7 +134,6 @@ return [
     |
     */
     'commands' => [
-        HelpCommand::class,
     ],
 
     /*
