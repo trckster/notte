@@ -4,6 +4,7 @@ namespace App\Telegram;
 
 use Telegram\Bot\Commands\Command;
 use App\Models\Token;
+use Carbon\Carbon;
 use Str;
 
 class TokenCommand extends Command 
@@ -17,6 +18,12 @@ class TokenCommand extends Command
         $userId = $this->getUpdate()->getMessage()->from->id;
 
         $secret = $userId . ':' . Str::random(24);
+
+        Token::query()->where('user_id', $userId)->update(
+            [
+                'revoked_at' => Carbon::now()
+            ]
+        );
         
         Token::query()
                 ->create(
