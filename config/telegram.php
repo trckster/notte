@@ -43,6 +43,7 @@ return [
              */
             'allowed_updates' => null,
             'commands' => [
+                HelpCommand::class,
                 StartCommand::class,
                 TokenCommand::class,
             ],
