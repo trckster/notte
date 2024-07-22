@@ -19,12 +19,10 @@ class LogController extends Controller
         $targetChatId = Context::get('target_chat_id');
         $data = $validated['data'];
 
-        Telegram::sendMessage(
-            [
+        Telegram::sendMessage([
                 'chat_id' => $targetChatId,
                 'text' => "$userId -> $targetChatId: $data"
-            ]
-        );
+            ]);
 
         Log::info("$userId -> $targetChatId: $data");
     }
