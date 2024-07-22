@@ -5,7 +5,7 @@ namespace App\Telegram;
 use Telegram\Bot\Commands\Command;
 use App\Models\Token;
 use Carbon\Carbon;
-use Str;
+use Illuminate\Support\Str;
 
 class TokenCommand extends Command 
 {
