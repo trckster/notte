@@ -7,7 +7,7 @@ use App\Models\Token;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
-class TokenCommand extends Command 
+class TokenCommand extends Command
 {
     protected string $name = 'token';
     protected string $description = 'Creates authentication token';
@@ -19,17 +19,16 @@ class TokenCommand extends Command
 
         $secret = $userId . ':' . Str::random(24);
 
-        Token::query()->where('user_id', $userId)->update(
-[
-                'revoked_at' => Carbon::now()
-            ]);
-        
+        Token::query()->where('user_id', $userId)->update([
+            'revoked_at' => Carbon::now()
+        ]);
+
         Token::query()
-                ->create([
-                        'target_chat_id' => $targetChatId,
-                        'user_id' => $userId,
-                        'secret' => $secret,
-                    ]);
+            ->create([
+                'target_chat_id' => $targetChatId,
+                'user_id' => $userId,
+                'secret' => $secret,
+            ]);
 
         $this->replyWithMessage([
             'text' => "Your token:\n\n`$secret`\n\nAll the previous tokens were revoked",
