@@ -13,6 +13,7 @@ class HasToken
     public function handle(Request $request, Closure $next): Response
     {
         $authorizationHeaderParts = explode(' ', $request->header('Authorization'));
+
         $tokenSecret = $authorizationHeaderParts[1] ?? null;
 
         $token = Token::query()->where('secret', $tokenSecret)->first();

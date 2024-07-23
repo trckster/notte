@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Context;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 class LogController extends Controller
 {
@@ -14,10 +14,12 @@ class LogController extends Controller
             'data' => 'required|filled',
         ]);
 
-        $userId = Context::get('user_id');
         $targetChatId = Context::get('target_chat_id');
         $data = $validated['data'];
 
-        Log::info("$userId -> $targetChatId: $data");
+        Telegram::sendMessage([
+            'chat_id' => $targetChatId,
+            'text' => $data,
+        ]);
     }
 }
