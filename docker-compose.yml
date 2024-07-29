@@ -9,8 +9,8 @@ services:
             condition: service_healthy
         restart: unless-stopped
         ports:
-          - "127.0.0.1:8000:8000"
-        command: sh -c "php artisan migrate && php artisan serve"
+          - "8000:8000"
+        command: sh -c "php artisan migrate && php arisan app:setup-webhook && php artisan serve"
       
     postgres:
       image: postgres
@@ -19,5 +19,7 @@ services:
         POSTGRES_DB: ${DB_DATABASE}
         POSTGRES_USER: ${DB_USERNAME}
         POSTGRES_PASSWORD: ${DB_PASSWORD}
+      ports:
+        - "8001:5432"
       healthcheck:
         test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]

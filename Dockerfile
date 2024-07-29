@@ -7,10 +7,13 @@ WORKDIR /app
 
 COPY . /app/
 
-RUN docker-php-ext-install pdo pdo_pgsql pgsql openssl bcmath curl json mbstring tokenizer xml
-RUN docker-php-ext-enable pdo pdo_pgsql pgsql openssl bcmath curl json mbstring tokenizer xml
+RUN apt-get update && apt upgrade
+RUN apt-get install -y libpq-dev libgmp-dev
 
-RUN composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader; \
+RUN docker-php-ext-install pdo_pgsql pgsql 
+RUN docker-php-ext-enable pdo_pgsql pgsql
+
+RUN composer install --no-ansi --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader; \
     composer clearcache
 
 CMD php artisan serve
