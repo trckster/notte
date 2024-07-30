@@ -1,6 +1,17 @@
 # About
 
-Telegram notifications via HTTP.
+If you want to send notifications from your application to yourself in Telegram, you can use Notte.
+
+![img.png](storage/readme/img.png)
+# Usage
+
+Generate token in [@nottefication_bot](https://t.me/nottefication_bot) and send any message using token as bearer auth:
+```shell
+curl https://notte.daniil.online/api/log \
+    -H 'Content-type: application/json' \
+    -H 'Authorization: Bearer {token-from-bot}' \
+    -d '{ "data": "Test message" }'
+```
 
 # Development
 
