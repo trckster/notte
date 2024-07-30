@@ -10,8 +10,8 @@ services:
         restart: unless-stopped
         ports:
           - "127.0.0.1:8000:8000"
-        command: sh -c "php artisan migrate && php artisan app:setup-webhook && php artisan serve --host=0.0.0.0"
-      
+        command: ./start.sh
+
     postgres:
       image: postgres
       restart: unless-stopped

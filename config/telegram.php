@@ -5,7 +5,7 @@ use App\Telegram\TokenCommand;
 use Telegram\Bot\Commands\HelpCommand;
 
 return [
-    'webhook_token' => env('TELEGRAM_WEBHOOK_TOKEN', 'TELEGRAM-WEBHOOK-TOKEN'),
+    'webhook-token' => hash('sha256', env('TELEGRAM_BOT_TOKEN', 'YOUR-BOT-TOKEN')),
     /*
     |--------------------------------------------------------------------------
     | Your Telegram Bots
@@ -37,7 +37,6 @@ return [
         'notte' => [
             'token' => env('TELEGRAM_BOT_TOKEN', 'YOUR-BOT-TOKEN'),
             'certificate_path' => env('TELEGRAM_CERTIFICATE_PATH', 'YOUR-CERTIFICATE-PATH'),
-            'webhook_url' => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
             /*
              * @see https://core.telegram.org/bots/api#update
              */

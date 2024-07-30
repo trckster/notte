@@ -11,8 +11,8 @@ class HasValidTelegramToken
     public function handle(Request $request, Closure $next): Response
     {
         $tokenSecret = $request->header('X-Telegram-Bot-Api-Secret-Token');
-         
-        if ($tokenSecret !== config('telegram.webhook_token')) {
+
+        if ($tokenSecret !== config('telegram.webhook-token')) {
             return response('Invalid telegram token!', 401);
         }
 

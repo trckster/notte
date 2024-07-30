@@ -4,11 +4,11 @@ Telegram notifications via HTTP.
 
 # Development
 
-In order to run the project, you should follow these steps
+In order to run the project, you should follow these steps:
 
-1. install ngrok, config ngrok and run the following command
-    `ngrok http <port>`
-
-2. fill up the .env file with appropriate values, set `DB_HOST=postgres` and set `TELEGRAM_WEBHOOK_URL` to url from ngrok with `/api/webhook` added
-
-3. Run the `docker compose up` command 
+1. Install & run ngrok: `ngrok http 8000`
+2. Fill environment variables:
+    - `cp .env.example .env`
+    - Generate bot token via [@BotFather](https://t.me/botfather) and set `TELEGRAM_BOT_TOKEN` variable
+    - Copy url from ngrok and set `APP_URL`
+3. Launch project: `docker compose up --build`
