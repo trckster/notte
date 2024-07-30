@@ -1,0 +1,26 @@
+services:
+    laravel:
+        env_file:
+          - .env
+        build:
+            context: .
+        depends_on:
+          postgres:
+            condition: service_healthy
+        restart: unless-stopped
+        ports:
+          - "127.0.0.1:8000:80"
+        command: ./start.sh
+
+    postgres:
+      image: postgres
+      restart: unless-stopped
+      environment:
+        POSTGRES_DB: ${DB_DATABASE}
+        POSTGRES_USER: ${DB_USERNAME}
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+      ports:
+        - "127.0.0.1:8001:5432"
+      healthcheck:
+        test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
+        interval: 1s

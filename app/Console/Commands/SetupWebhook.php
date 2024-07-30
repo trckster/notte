@@ -14,8 +14,8 @@ class SetupWebhook extends Command
     public function handle()
     {
         Telegram::setWebhook([
-            'url' => config('telegram.bots.notte.webhook_url'),
-            'secret_token' => config('telegram.webhook_token'),
+            'url' => config('app.url') . '/api/webhook',
+            'secret_token' => config('telegram.webhook-token'),
         ]);
 
         $this->info('Webhook is ready!');
