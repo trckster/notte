@@ -1,0 +1,16 @@
+{
+    "access_log": "/var/www/unitd.log",
+    "listeners": {
+        "*:80": {
+            "pass": "applications/core"
+        }
+    },
+    "applications": {
+        "core": {
+            "type": "php",
+            "processes": 3,
+            "root": "/app/public/",
+            "script": "index.php"
+        }
+    }
+}
