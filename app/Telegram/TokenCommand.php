@@ -16,8 +16,8 @@ class TokenCommand extends Command
     {
         $targetChatId = $this->getUpdate()->getChat()->id;
         $userId = $this->getUpdate()->getMessage()->from->id;
-
-        $secret = $userId . ':' . Str::random(24);
+        $userName = $this->getUpdate()->getMessage()->from->username ?? $userId;
+        $secret = $userName . ':' . Str::random(24);
 
         Token::query()->where('user_id', $userId)->update([
             'revoked_at' => Carbon::now()
