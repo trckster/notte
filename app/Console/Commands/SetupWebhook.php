@@ -16,17 +16,34 @@ class SetupWebhook extends Command
     public function handle()
     {
         $port = config('services.ngrok.forward_port');
-        $result = Process::run("ngrok http $port");
+        $api_key = config('services.ngrok.api_key');
 
-        if ($result->successful()) {
-            $response = Http::get('http://example.com');
+        $ngrokProcess = Process::forever()->start("ngrok http $port");
+
+        sleep(5);
+
+        while ($ngrokProcess->running())
+        {
+            $result = json_decode(
+                Http::withHeaders(
+                [
+                    'Authorization' => "Bearer $api_key",
+                    'Ngrok-Version' => 2,
+                ]
+            )->get('https://api.ngrok.com/tunnels'), 1
+            );
+
+            var_dump($result);
+
+            $ngrokURL = $result['tunnels'][0]['public_url'];
+
+            Telegram::setWebhook([
+                'url' => $ngrokURL,
+                'secret_token' => config('telegram.webhook-token'),
+            ]);
+
+            $this->info('Webhook is ready!');
+            break;
         }
-
-        Telegram::setWebhook([
-            'url' => config('telegram.bots.notte.webhook_url'),
-            'secret_token' => config('telegram.webhook_token'),
-        ]);
-
-        $this->info('Webhook is ready!');
     }
 }

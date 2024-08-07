@@ -13,6 +13,10 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'ngrok' => [
+        'api_key' => env('NGROK_API_TOKEN'),
+        'forward_port' => env('NGROK_FORWARD_PORT'),
+    ],
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
