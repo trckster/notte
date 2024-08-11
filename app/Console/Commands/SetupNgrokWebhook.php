@@ -6,20 +6,19 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use Telegram\Bot\Laravel\Facades\Telegram;
-
-class SetupWebhook extends Command
+class SetupNgrokWebhook extends Command
 {
-    protected $signature = 'app:setup-webhook';
+    protected $signature = 'app:setup-ngrok-webhook';
 
     protected $description = 'Command description';
 
     public function ngrokConfig()
     {
-        $authToken = config('services.ngrok.auth_token');
-        Process::run("ngrok config $authToken");
+        if (Process::run('ngrok config check')->failed()) {
+            $authToken = config('services.ngrok.auth_token');
+            Process::run("ngrok config $authToken");
+        }
     }
-
-    
 
     public function handle()
     {
