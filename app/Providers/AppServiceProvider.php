@@ -9,17 +9,6 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
-
-    /**
-     * Bootstrap any application services.
-     */
     protected function boot(): void
     {
         RateLimiter::for('api/log', function (Request $request) {
