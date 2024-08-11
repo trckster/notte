@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use Telegram\Bot\Laravel\Facades\Telegram;
+
 class SetupNgrokWebhook extends Command
 {
     protected $signature = 'app:setup-ngrok-webhook';
