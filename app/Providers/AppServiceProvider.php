@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected function boot(): void
+    public function boot(): void
     {
         RateLimiter::for('api/log', function (Request $request) {
             return Limit::perMinute(10)->by($request->header('Authorization') ?: $request->ip());
