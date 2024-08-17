@@ -10,13 +10,10 @@ COPY nginx-unit/docker-entrypoint.sh /usr/local/bin/
 COPY nginx-unit/config.json /docker-entrypoint.d/
 
 RUN apt update && apt upgrade -y
-RUN apt install -y libpq-dev libgmp-dev zip unzip gpg
+RUN apt install -y libpq-dev libgmp-dev zip unzip gpg wget
 
-RUN curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | \
-gpg --dearmor -o /etc/apt/keyrings/ngrok.gpg && \
-echo "deb [signed-by=/etc/apt/keyrings/ngrok.gpg] https://ngrok-agent.s3.amazonaws.com buster main" | \
-tee /etc/apt/sources.list.d/ngrok.list && \
-apt update && apt install ngrok
+RUN wget -q https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz && \
+tar xvzf ./ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
 
 
 RUN docker-php-ext-install pdo_pgsql pgsql
