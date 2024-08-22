@@ -13,6 +13,6 @@ class AppServiceProvider extends ServiceProvider
     {
         RateLimiter::for('log', function (Request $request) {
             return Limit::perMinute(10)->by($request->bearerToken() ?: $request->ip());
-    });
+        });
     }
 }
