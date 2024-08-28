@@ -23,25 +23,20 @@ class SetupNgrokWebhook extends Command
 
     public function handle()
     {
-        $port = config('services.ngrok.forward_port');
         $api_key = config('services.ngrok.api_key');
 
-        $ngrokProcess = Process::forever()->start("ngrok http $port");
+        $this->ngrokConfig();
+
+        $ngrokProcess = Process::forever()->start("ngrok http 8000");
 
         sleep(5);
 
         while ($ngrokProcess->running())
         {
-            $result = json_decode(
-                Http::withHeaders(
-                [
+            $result = json_decode(Http::withHeaders([
                     'Authorization' => "Bearer $api_key",
                     'Ngrok-Version' => 2,
-                ]
-            )->get('https://api.ngrok.com/tunnels'), 1
-            );
-
-            var_dump($result);
+                ])->get('https://api.ngrok.com/tunnels'), 1);
 
             $ngrokURL = $result['tunnels'][0]['public_url'];
 
