@@ -37,8 +37,6 @@ class SetupNgrokWebhook extends Command
 
             $ngrokURL = $result['tunnels'][0]['public_url'];
 
-            var_dump($result);
-
             Telegram::setWebhook([
                 'url' => $ngrokURL,
                 'secret_token' => config('telegram.webhook-token'),
