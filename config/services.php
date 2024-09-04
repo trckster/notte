@@ -14,8 +14,6 @@ return [
     |
     */
     'ngrok' => [
-        'api_key' => env('NGROK_API_TOKEN'),
-        'forward_port' => env('NGROK_FORWARD_PORT'),
         'auth_token' => env('NGROK_AUTH_TOKEN'),
     ],
     

@@ -33,12 +33,11 @@ class SetupNgrokWebhook extends Command
 
         while ($ngrokProcess->running())
         {
-            $result = json_decode(Http::withHeaders([
-                    'Authorization' => "Bearer $api_key",
-                    'Ngrok-Version' => 2,
-                ])->get('https://api.ngrok.com/tunnels'), 1);
+            $result = json_decode(Http::withHeaders(['Content-Type' => 'application/json'])->get('http://127.0.0.1:4040/api/tunnels'), 1);
 
             $ngrokURL = $result['tunnels'][0]['public_url'];
+
+            var_dump($result);
 
             Telegram::setWebhook([
                 'url' => $ngrokURL,
