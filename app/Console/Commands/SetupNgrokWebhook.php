@@ -23,15 +23,13 @@ class SetupNgrokWebhook extends Command
 
     public function handle()
     {
-        $api_key = config('services.ngrok.api_key');
-
         $this->ngrokConfig();
 
         $ngrokProcess = Process::forever()->start("ngrok http 8000");
 
         sleep(5);
 
-        while ($ngrokProcess->running())
+        if ($ngrokProcess->running())
         {
             $result = json_decode(Http::withHeaders(['Content-Type' => 'application/json'])->get('http://127.0.0.1:4040/api/tunnels'), 1);
 
@@ -43,7 +41,6 @@ class SetupNgrokWebhook extends Command
             ]);
 
             $this->info('Webhook is ready!');
-            break;
         }
     }
 }
