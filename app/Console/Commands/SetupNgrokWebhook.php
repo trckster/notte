@@ -11,36 +11,42 @@ class SetupNgrokWebhook extends Command
 {
     protected $signature = 'app:setup-ngrok-webhook';
 
-    protected $description = 'Command description';
-
-    public function ngrokConfig()
-    {
-        if (Process::run('ngrok config check')->failed()) {
-            $authToken = config('services.ngrok.auth_token');
-            Process::run("ngrok config $authToken");
-        }
-    }
+    protected $description = 'Launch ngrok and set up Telegram webhook';
 
     public function handle()
     {
-        $this->ngrokConfig();
+        $this->setUpNgrok();
 
-        $ngrokProcess = Process::forever()->start("ngrok http 8000");
+        $ngrokProcess = Process::forever()->start('ngrok http 80');
 
         sleep(5);
 
-        if ($ngrokProcess->running())
-        {
-            $result = json_decode(Http::withHeaders(['Content-Type' => 'application/json'])->get('http://127.0.0.1:4040/api/tunnels'), 1);
+        if (!$ngrokProcess->running()) {
+            $this->error('Ngrok failed to start');
+            $this->error($ngrokProcess->latestErrorOutput());
 
-            $ngrokURL = $result['tunnels'][0]['public_url'];
+            return 1;
+        }
 
-            Telegram::setWebhook([
-                'url' => $ngrokURL,
-                'secret_token' => config('telegram.webhook-token'),
-            ]);
+        $tunnels = Http::withHeaders(['Content-Type' => 'application/json'])
+            ->get('http://127.0.0.1:4040/api/tunnels')
+            ->json('tunnels');
 
-            $this->info('Webhook is ready!');
+        $telegramWebhook = $tunnels[0]['public_url'] . '/api/webhook';
+
+        Telegram::setWebhook([
+            'url' => $telegramWebhook,
+            'secret_token' => config('telegram.webhook-token'),
+        ]);
+
+        $this->info('Webhook is ready!');
+    }
+
+    private function setUpNgrok(): void
+    {
+        if (Process::run('ngrok config check')->failed()) {
+            $authToken = config('services.ngrok.auth_token');
+            Process::run("ngrok config add-authtoken $authToken");
         }
     }
 }
