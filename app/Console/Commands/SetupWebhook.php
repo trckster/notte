@@ -7,13 +7,31 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
-class SetupNgrokWebhook extends Command
+class SetupWebhook extends Command
 {
-    protected $signature = 'app:setup-ngrok-webhook';
+    protected $signature = 'app:setup-webhook';
 
-    protected $description = 'Launch ngrok and set up Telegram webhook';
+    protected $description = 'Set up Telegram webhook & launch ngrok if ngrok token if present';
 
-    public function handle()
+    public function handle(): void
+    {
+        $baseUrl = config('app.url');
+
+        if (config('services.ngrok.auth_token')) {
+            $baseUrl = $this->launchNgrok();
+        }
+
+        $telegramWebhook = $baseUrl . '/api/webhook';
+
+        Telegram::setWebhook([
+            'url' => $telegramWebhook,
+            'secret_token' => config('telegram.webhook-token'),
+        ]);
+
+        $this->info('Webhook is ready!');
+    }
+
+    private function launchNgrok(): string
     {
         $this->setUpNgrok();
 
@@ -32,14 +50,7 @@ class SetupNgrokWebhook extends Command
             ->get('http://127.0.0.1:4040/api/tunnels')
             ->json('tunnels');
 
-        $telegramWebhook = $tunnels[0]['public_url'] . '/api/webhook';
-
-        Telegram::setWebhook([
-            'url' => $telegramWebhook,
-            'secret_token' => config('telegram.webhook-token'),
-        ]);
-
-        $this->info('Webhook is ready!');
+        return $tunnels[0]['public_url'];
     }
 
     private function setUpNgrok(): void

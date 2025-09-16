@@ -23,3 +23,10 @@ In order to run the project, you should follow these steps:
     - Generate bot token via [@BotFather](https://t.me/botfather) and set `TELEGRAM_BOT_TOKEN` variable
     - Copy url from ngrok and set `APP_URL`
 3. Launch project: `docker compose up --build`
+
+# Deployment
+
+1. Locally deploy for the new version: `./deploy.sh`
+2. On the server set/update all .env variables
+3. `docker pull trckster/notte`
+4. TODO
