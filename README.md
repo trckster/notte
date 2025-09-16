@@ -29,4 +29,5 @@ In order to run the project, you should follow these steps:
 1. Locally deploy for the new version: `./deploy.sh`
 2. On the server set/update all .env variables
 3. `docker pull trckster/notte`
-4. TODO
+4. Change traefik network inside `docker-compose.prod.yml` if needed
+5. `docker compose -f docker-compose.prod.yml up -d`

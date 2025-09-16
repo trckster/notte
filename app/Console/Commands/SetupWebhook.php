@@ -28,7 +28,7 @@ class SetupWebhook extends Command
             'secret_token' => config('telegram.webhook-token'),
         ]);
 
-        $this->info('Webhook is ready!');
+        $this->info("Webhook is ready at $telegramWebhook");
     }
 
     private function launchNgrok(): string
