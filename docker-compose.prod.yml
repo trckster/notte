@@ -21,15 +21,9 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.docker.network=traefik
-      - traefik.http.routers.notte-http.rule=Host(`notte.daniil.online`)
-      - traefik.http.routers.notte-http.entrypoints=http
-      - traefik.http.routers.notte-http.middlewares=https-redirect
-      - traefik.http.routers.notte-https.rule=Host(`notte.daniil.online`)
-      - traefik.http.routers.notte-https.entrypoints=https
-      - traefik.http.routers.notte-https.tls=true
-      - traefik.http.routers.notte-https.tls.certresolver=le
-      - traefik.http.services.notte.loadbalancer.server.port=80
+      - traefik.http.routers.notte.rule=Host(`notte.daniil.online`)
+      - traefik.http.routers.notte.tls=true
+      - traefik.http.routers.notte.tls.certresolver=le
 
   postgres:
     image: postgres:17
